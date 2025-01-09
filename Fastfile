@@ -60,6 +60,12 @@ platform :ios do
       path: keychain_path,
       password: keychain_password
     )
+
+     # Log inputs for debugging
+    UI.message("Scheme: #{scheme}")
+    UI.message("Keychain Path: #{keychain_path}")
+    UI.message("App ID: #{app_id}")
+    UI.message("Provisioning Profile: #{provisioning_profile}")
   
     # Build app with provisioning profile mapping
     build_app(
