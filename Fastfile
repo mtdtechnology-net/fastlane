@@ -65,7 +65,7 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          app_id=> providioning_profile
+          app_id => providioning_profile
         }
       }
     )
