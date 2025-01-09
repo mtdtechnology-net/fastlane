@@ -48,24 +48,26 @@ platform :ios do
 
   desc "Build App for TestFlight"
   lane :build_release do |options|
-    # load keychain pwd
+    # Load inputs
     scheme = options[:scheme]
     keychain_password = options[:keychain_password]
     keychain_path = options[:keychain_path]
     app_id = options[:app_id]
-    providioning_profile = options[:providioning_profile]
-    # unlock keychain 
-    unlock_keychain( 
+    provisioning_profile = options[:provisioning_profile]
+  
+    # Unlock keychain
+    unlock_keychain(
       path: keychain_path,
       password: keychain_password
     )
-    # build app 
+  
+    # Build app with provisioning profile mapping
     build_app(
-      scheme: scheme, 
+      scheme: scheme,
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          app_id => providioning_profile
+          app_id => provisioning_profile
         }
       }
     )
