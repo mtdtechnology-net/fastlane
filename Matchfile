@@ -1,0 +1,12 @@
+# Match configuration file
+# For more information, see:
+#     https://docs.fastlane.tools/actions/match/
+
+git_url("")
+storage_mode("")
+type("") # The default type, can be: appstore, adhoc, enterprise or development
+app_identifier([""])
+username("") # Your Apple Developer Portal username
+team_id("") # Developer Portal Team ID
+readonly(true)
+verbose(true)
