@@ -31,6 +31,16 @@ platform :ios do
     contact_phone = options[:contact_phone]
     demo_account_name = options[:demo_account_name]
     demo_account_password = options[:demo_account_password]
+
+     # Debugging: Log the received parameters
+    UI.message("Release Notes: #{release_notes}")
+    UI.message("Contact Email: #{contact_email}")
+    UI.message("Contact First Name: #{contact_first_name}")
+    UI.message("Contact Last Name: #{contact_last_name}")
+    UI.message("Contact Phone: #{contact_phone}")
+    UI.message("Demo Account Name: #{demo_account_name}")
+    UI.message("Demo Account Password: #{demo_account_password}")
+
     # push to testflight
     upload_to_testflight(
       api_key_path: "./api_key.json",
@@ -61,12 +71,6 @@ platform :ios do
       password: keychain_password
     )
 
-     # Log inputs for debugging
-    UI.message("Scheme: #{scheme}")
-    UI.message("Keychain Path: #{keychain_path}")
-    UI.message("App ID: #{app_id}")
-    UI.message("Provisioning Profile: '#{provisioning_profile}'")
-  
     # Build app with provisioning profile mapping
     build_app(
       scheme: scheme,
