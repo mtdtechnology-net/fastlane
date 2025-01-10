@@ -65,7 +65,7 @@ platform :ios do
     UI.message("Scheme: #{scheme}")
     UI.message("Keychain Path: #{keychain_path}")
     UI.message("App ID: #{app_id}")
-    UI.message("Provisioning Profile: #{provisioning_profile}")
+    UI.message("Provisioning Profile: '#{provisioning_profile}'")
   
     # Build app with provisioning profile mapping
     build_app(
@@ -73,7 +73,7 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          "#{app_id}" => "#{provisioning_profile}"
+          app_id => provisioning_profile
         }
       }
     )
