@@ -49,7 +49,9 @@ platform :ios do
 
   desc "Build App for TestFlight"
   lane :build_release do |options|
+    
     # Load inputs
+    workspace = options[:workspace] # Optional
     scheme = options[:scheme]
     keychain_password = options[:keychain_password]
     keychain_path = options[:keychain_path]
@@ -62,8 +64,8 @@ platform :ios do
       password: keychain_password
     )
 
-    # Build app with provisioning profile mapping
-    build_app(
+    # Prepare build parameters
+    build_params = {
       scheme: scheme,
       export_method: "app-store",
       export_options: {
@@ -71,7 +73,13 @@ platform :ios do
           app_id => provisioning_profile
         }
       }
-    )
+    }
+
+    # Only add workspace if it's provided
+    build_params[:workspace] = workspace unless workspace.nil?
+
+    # Build app
+    build_app(build_params)
   end
 
   desc "Loads provisioning profile"
@@ -107,11 +115,13 @@ platform :ios do
 
   desc "Run Tests"
   lane :test_app do |options|
+    workspace = options[:workspace]
     project = options[:project]
     scheme = options[:scheme]
     testplan = options[:testplan]
     # run tests
     run_tests(
+      workspace: workspace,
       project: project, 
       scheme: scheme,
       testplan: testplan,
