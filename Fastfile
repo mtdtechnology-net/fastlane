@@ -64,8 +64,9 @@ platform :ios do
       password: keychain_password
     )
 
-    # Prepare build parameters
-    build_params = {
+    # Build app with provisioning profile mapping
+    build_app(
+      workspace: workspace,
       scheme: scheme,
       export_method: "app-store",
       export_options: {
@@ -73,13 +74,7 @@ platform :ios do
           app_id => provisioning_profile
         }
       }
-    }
-
-    # Only add workspace if it's provided
-    build_params[:workspace] = workspace unless workspace.nil?
-
-    # Build app
-    build_app(build_params)
+    )
   end
 
   desc "Loads provisioning profile"
