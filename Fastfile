@@ -83,7 +83,7 @@ platform :ios do
     scheme = options[:scheme]
     keychain_password = options[:keychain_password]
     keychain_path = options[:keychain_path]
-    provisioning_profiles = options[:provisioning_profiles] # Ex: { "com.example.app" => "AppProfile", "com.example.app.NotificationService" => "NotificationProfile" }
+    provisioning_profiles = eval(options[:provisioning_profiles]) # Ex: { "com.example.app" => "AppProfile", "com.example.app.NotificationService" => "NotificationProfile" }
 
     # Unlock keychain
     unlock_keychain(
