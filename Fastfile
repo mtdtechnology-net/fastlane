@@ -77,6 +77,31 @@ platform :ios do
     )
   end
 
+  lane :build_release_multiple_targets do |options|
+    # Load inputs
+    workspace = options[:workspace] # Optional
+    scheme = options[:scheme]
+    keychain_password = options[:keychain_password]
+    keychain_path = options[:keychain_path]
+    provisioning_profiles = options[:provisioning_profiles] # Ex: { "com.example.app" => "AppProfile", "com.example.app.NotificationService" => "NotificationProfile" }
+
+    # Unlock keychain
+    unlock_keychain(
+      path: keychain_path,
+      password: keychain_password
+    )
+
+    # Build app with provisioning profile mapping
+    build_app(
+      workspace: workspace,
+      scheme: scheme,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: provisioning_profiles
+      }
+    )
+  end
+
   desc "Loads provisioning profile"
   lane :prepare_signing do |options|
     # load keychain pwd
