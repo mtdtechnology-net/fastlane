@@ -78,13 +78,17 @@ platform :ios do
   end
 
   lane :build_release_multiple_targets do |options|
+    
     # Load inputs
     workspace = options[:workspace] # Optional
     scheme = options[:scheme]
     keychain_password = options[:keychain_password]
     keychain_path = options[:keychain_path]
-    provisioning_profiles = eval(options[:provisioning_profiles]) # Ex: { "com.example.app" => "AppProfile", "com.example.app.NotificationService" => "NotificationProfile" }
-
+    app_id = options[:app_id]
+    provisioning_profile = options[:provisioning_profile]
+    extension_app_id = options[:extension_app_id]
+    extension_provisioning_profile = options[:extension_provisioning_profile]
+  
     # Unlock keychain
     unlock_keychain(
       path: keychain_path,
@@ -97,7 +101,10 @@ platform :ios do
       scheme: scheme,
       export_method: "app-store",
       export_options: {
-        provisioningProfiles: provisioning_profiles
+        provisioningProfiles: {
+          app_id => provisioning_profile, 
+          extension_app_id => extension_provisioning_profile
+        }
       }
     )
   end
