@@ -31,6 +31,14 @@ Push a new beta build to TestFlight
 
 Build App for TestFlight
 
+### ios build_release_multiple_targets
+
+```sh
+[bundle exec] fastlane ios build_release_multiple_targets
+```
+
+
+
 ### ios prepare_signing
 
 ```sh
