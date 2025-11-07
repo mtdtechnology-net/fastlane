@@ -47,8 +47,38 @@ platform :ios do
     )
   end
 
-  desc "Build App for TestFlight"
-  lane :build_release do |options|
+  desc "Build App for TestFlight - Project"
+  lane :build_release_project do |options|
+    
+    # Load inputs
+    project = options[:project]
+    scheme = options[:scheme]
+    keychain_password = options[:keychain_password]
+    keychain_path = options[:keychain_path]
+    app_id = options[:app_id]
+    provisioning_profile = options[:provisioning_profile]
+  
+    # Unlock keychain
+    unlock_keychain(
+      path: keychain_path,
+      password: keychain_password
+    )
+
+    # Build app with provisioning profile mapping
+    build_app(
+      project: project,
+      scheme: scheme,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: {
+          app_id => provisioning_profile
+        }
+      }
+    )
+  end
+
+  desc "Build App for TestFlight - Workspace"
+  lane :build_release_workspace do |options|
     
     # Load inputs
     workspace = options[:workspace] # Optional
