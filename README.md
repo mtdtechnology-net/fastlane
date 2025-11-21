@@ -95,6 +95,30 @@ Run sonar
 
 Generate codecoverage
 
+### ios resign_ipa
+
+```sh
+[bundle exec] fastlane ios resign_ipa
+```
+
+Resign an existing IPA with a new profile and version
+
+### ios list_signing_identities
+
+```sh
+[bundle exec] fastlane ios list_signing_identities
+```
+
+List available code signing identities in the keychain
+
+### ios verify_signing_identity
+
+```sh
+[bundle exec] fastlane ios verify_signing_identity
+```
+
+Verify that a given signing identity exists
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
