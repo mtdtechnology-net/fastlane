@@ -224,4 +224,64 @@ platform :ios do
       minimum_coverage_percentage: coverage
     )
   end 
+  
+  desc "Resign an existing IPA with a new profile and version"
+  lane :resign_ipa do |options|
+    ipa_path         = options[:ipa_path]
+    profile_path     = options[:profile_path]
+    signing_identity = options[:signing_identity]
+    new_version      = options[:new_version]
+
+    UI.user_error!("ipa_path is required") unless ipa_path
+    UI.user_error!("profile_path is required") unless profile_path
+    UI.user_error!("signing_identity is required") unless signing_identity
+    UI.user_error!("new_version is required") unless new_version
+
+    UI.user_error!("ipa_path does not exist: #{ipa_path}") unless File.exist?(ipa_path)
+    UI.user_error!("profile_path does not exist: #{profile_path}") unless File.exist?(profile_path)
+
+    UI.message("Resigning IPA: #{ipa_path}")
+    UI.message("Using provisioning profile: #{profile_path}")
+    UI.message("Signing identity: #{signing_identity}")
+    UI.message("New version: #{new_version}")
+
+    # Ensure the signing identity exists before attempting to resign
+    verify_signing_identity(signing_identity: signing_identity)
+
+    resign(
+      ipa: ipa_path,
+      signing_identity: signing_identity,
+      provisioning_profile: profile_path,
+      version: new_version
+    )
+
+    UI.success("✅ Successfully resigned IPA at: #{ipa_path}")
+  end
+
+  desc "List available code signing identities in the keychain"
+  lane :list_signing_identities do
+    UI.message("Listing available code signing identities (Keychain):")
+    output = sh("security find-identity -v -p codesigning || true")
+    if output.to_s.strip.empty?
+      UI.important("No code signing identities found. Make sure your certificates are installed in the login keychain.")
+    else
+      UI.message(output)
+    end
+  end
+
+  desc "Verify that a given signing identity exists"
+  lane :verify_signing_identity do |options|
+    identity = options[:signing_identity]
+    UI.user_error!("signing_identity is required") unless identity
+
+    output = sh("security find-identity -v -p codesigning || true")
+    lines = output.to_s.split("\n")
+    found = lines.any? { |l| l.include?(identity) }
+
+    unless found
+      UI.user_error!("Signing identity not found: #{identity}\nRun 'fastlane ios list_signing_identities' to see available identities.")
+    end
+
+    UI.success("✅ Found signing identity: #{identity}")
+  end
 end
