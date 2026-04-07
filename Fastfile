@@ -111,6 +111,7 @@ platform :ios do
     
     # Load inputs
     workspace = options[:workspace]
+    scheme = options[:scheme]
     keychain_password = options[:keychain_password]
     keychain_path = options[:keychain_path]
     app_id = options[:app_id]
