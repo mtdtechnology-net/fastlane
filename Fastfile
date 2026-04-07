@@ -146,6 +146,16 @@ platform :ios do
     match(app_identifier: [app_id], git_url: git_url)
   end
 
+  desc "Loads provisioning profiles using PAT"
+  lane :prepare_signing_pat do |options|
+    # load keychain pwd
+    git_url = options[:git_url]
+    app_id = options[:app_id]
+    git_basic_authorization = options[:git_basic_authorization]
+    # match requires EnvVar MATCH_PASSWORD
+    match(app_identifier: [app_id], git_url: git_url, git_basic_authorization: git_basic_authorization)
+  end
+
   desc "Sets the build_number to certain value"
   lane :set_build_number do |options|
     build_number = options[:build_number]
