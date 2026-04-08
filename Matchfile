@@ -2,11 +2,11 @@
 # For more information, see:
 #     https://docs.fastlane.tools/actions/match/
 
-git_url("")
-storage_mode("")
-type("") # The default type, can be: appstore, adhoc, enterprise or development
-app_identifier([""])
-username("") # Your Apple Developer Portal username
-team_id("") # Developer Portal Team ID
-readonly(true)
+git_url("https://aokey@dev.azure.com/aokey/NorthStar/_git/ios-certificates")
+storage_mode("git")
+type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
+app_identifier(["com.ey.northstar.sample.ru-dev.debug"])
+username("tim-lorenz.depping@de.ey.com") # Your Apple Developer Portal username
+team_id("A774P42LR4") # Developer Portal Team ID
+readonly(false)
 verbose(true)

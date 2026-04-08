@@ -130,6 +130,7 @@ platform :ios do
       workspace: workspace,
       scheme: scheme,
       export_method: "app-store",
+      skip_profile_detection: true,
       export_options: {
         provisioningProfiles: {
           app_id => provisioning_profile, 
