@@ -47,6 +47,35 @@ platform :ios do
     )
   end
 
+  desc "Push a build to TestFlight"
+  lane :publish_ipa do |options|
+    # setup release notes
+    ipa_path = options[:ipa_path]
+    api_key_path = options[:api_key_path]
+    release_notes = options[:release_notes]
+    contact_email = options[:contact_email]
+    contact_first_name = options[:contact_first_name]
+    contact_last_name = options[:contact_last_name]
+    contact_phone = options[:contact_phone]
+    demo_account_name = options[:demo_account_name]
+    demo_account_password = options[:demo_account_password]
+
+    # push to testflight
+    upload_to_testflight(
+      ipa: ipa_path,
+      api_key_path: api_key_path,
+      beta_app_review_info: {
+        contact_email: contact_email,
+        contact_first_name: contact_first_name,
+        contact_last_name: contact_last_name,
+        contact_phone: contact_phone,
+        demo_account_name: demo_account_name,
+        demo_account_password: demo_account_password,
+      },
+      changelog: release_notes
+    )
+  end
+
   desc "Build App for TestFlight - Project"
   lane :build_release_project do |options|
     
