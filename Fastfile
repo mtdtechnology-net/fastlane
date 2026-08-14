@@ -147,7 +147,8 @@ platform :ios do
     provisioning_profile = options[:provisioning_profile]
     extension_app_id = options[:extension_app_id]
     extension_provisioning_profile = options[:extension_provisioning_profile]
-  
+    export_method = options[:export_method] || "app-store"
+
     # Unlock keychain
     unlock_keychain(
       path: keychain_path,
@@ -158,7 +159,7 @@ platform :ios do
     build_app(
       workspace: workspace,
       scheme: scheme,
-      export_method: "app-store",
+      export_method: export_method,
       skip_profile_detection: true,
       export_options: {
         provisioningProfiles: {
