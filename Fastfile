@@ -207,6 +207,9 @@ platform :ios do
     app_id = options[:app_id]
     # match requires EnvVar MATCH_PASSWORD
     match(app_identifier: [app_id], git_url: git_url)
+    # Print the profile match actually resolved/installed for this app_id, so callers don't have
+    # to guess or hardcode a naming convention (profile name and profile type are independent here).
+    UI.message("RESOLVED_PROFILE_NAME=#{ENV['SIGH_PROFILE_NAME']}")
   end
 
   desc "Loads provisioning profiles using PAT"
