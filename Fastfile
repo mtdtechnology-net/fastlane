@@ -214,7 +214,16 @@ platform :ios do
     match(app_identifier: [app_id], git_url: git_url)
     # Print the profile match actually resolved/installed for this app_id, so callers don't have
     # to guess or hardcode a naming convention (profile name and profile type are independent here).
-    UI.message("RESOLVED_PROFILE_NAME=#{ENV['SIGH_PROFILE_NAME']}")
+    # match appends a timestamp to the name when it regenerates a profile, so "match <Type> <app_id>"
+    # is not reliable.
+    profile_name = (Actions.lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING] || {})[app_id]
+    UI.message("RESOLVED_PROFILE_NAME=#{profile_name}")
+    # Optionally hand the name to later Azure Pipelines steps. Printed with puts because the logging
+    # command must start the line, and UI.message prefixes a timestamp.
+    output_variable = options[:output_variable]
+    if output_variable && profile_name
+      puts "##vso[task.setvariable variable=#{output_variable}]#{profile_name}"
+    end
   end
 
   desc "Loads provisioning profiles using PAT"
