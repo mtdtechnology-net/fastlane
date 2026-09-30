@@ -223,68 +223,25 @@ platform :ios do
     match(app_identifier: [app_id], git_url: git_url, git_basic_authorization: git_basic_authorization)
   end
 
-  desc "Runs match for every app id / extension across all environments for the given type"
+  desc "Runs match for every app id / extension listed in a file, for the given type"
   lane :match_all do |options|
     type = options[:type]
     UI.user_error!("type is required (appstore or development)") unless type
     UI.user_error!("type must be 'appstore' or 'development', got: #{type}") unless ["appstore", "development"].include?(type)
 
-    # Full list of app ids / extension ids we manage signing for.
+    app_ids_file = options[:app_ids_file]
+    UI.user_error!("app_ids_file is required — pass the path to a .txt file with one app id per line") unless app_ids_file
+    UI.user_error!("app_ids_file not found: #{app_ids_file}") unless File.exist?(app_ids_file)
+
+    # One app id / extension id per line. Blank lines and lines starting with
+    # # are ignored, so the file can be grouped/commented for readability.
     # Only app_identifier changes per match run — git_url, storage_mode,
     # username, team_id, readonly and verbose stay as configured in the Matchfile.
-    app_identifiers = [
-      # Northstar (sample) app
-      "com.ey.northstar.sample.local.debug",
-      "com.ey.northstar.sample.local",
-      "com.ey.northstar.sample.dev.debug",
-      "com.ey.northstar.sample.dev",
-      "com.ey.northstar.sample.dev2.debug",
-      "com.ey.northstar.sample.dev2",
-      "com.ey.northstar.sample.qa.debug",
-      "com.ey.northstar.sample.qa",
-      "com.ey.northstar.sample.qa2.debug",
-      "com.ey.northstar.sample.qa2",
-      "com.ey.northstar.sample.qa3.debug",
-      "com.ey.northstar.sample.qa3",
-      "com.ey.northstar.sample.qa4.debug",
-      "com.ey.northstar.sample.qa4",
-      "com.ey.northstar.sample.ru-dev.debug",
-      "com.ey.northstar.sample.ru-dev",
-      "com.ey.northstar.sample.ru-ref.debug",
-      "com.ey.northstar.sample.ru-ref",
-      "com.ey.northstar.sample.tu.debug",
-      "com.ey.northstar.sample.tu",
+    app_identifiers = File.readlines(app_ids_file)
+                          .map(&:strip)
+                          .reject { |line| line.empty? || line.start_with?("#") }
 
-      # AOK app -> will crash until we have them created!
-      "com.ey.northstar.aok.ru-dev.debug",
-      "com.ey.northstar.aok.ru-dev",
-      "com.ey.northstar.aok.ru-ref.debug",
-      "com.ey.northstar.aok.ru-ref",
-      "com.ey.northstar.aok.tu.debug",
-      "com.ey.northstar.aok.tu",
-
-      # Push notification service extensions (Northstar/sample app)
-      "com.ey.northstar.sample.local.notification-service-extension",
-      "com.ey.northstar.sample.local.debug.notification-service-extension",
-      "com.ey.northstar.sample.dev.notification-service-extension",
-      "com.ey.northstar.sample.dev.debug.notification-service-extension",
-      "com.ey.northstar.sample.dev2.notification-service-extension",
-      "com.ey.northstar.sample.dev2.debug.notification-service-extension",
-      "com.ey.northstar.sample.qa.notification-service-extension",
-      "com.ey.northstar.sample.qa.debug.notification-service-extension",
-      "com.ey.northstar.sample.qa2.notification-service-extension",
-      "com.ey.northstar.sample.qa2.debug.notification-service-extension",
-      "com.ey.northstar.sample.qa3.notification-service-extension",
-      "com.ey.northstar.sample.qa3.debug.notification-service-extension",
-      "com.ey.northstar.sample.qa4.notification-service-extension",
-      "com.ey.northstar.sample.qa4.debug.notification-service-extension",
-      "com.ey.northstar.sample.ru-dev.notification-service-extension",
-      "com.ey.northstar.sample.ru-dev.debug.notification-service-extension",
-      "com.ey.northstar.sample.ru-ref.notification-service-extension",
-      "com.ey.northstar.sample.ru-ref.debug.notification-service-extension",
-      "com.ey.northstar.sample.tu.notification-service-extension",
-      "com.ey.northstar.sample.tu.debug.notification-service-extension",
-    ]
+    UI.user_error!("No app ids found in #{app_ids_file}") if app_identifiers.empty?
 
     failed = []
 

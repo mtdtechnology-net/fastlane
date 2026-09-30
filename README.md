@@ -23,13 +23,37 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Push a new beta build to TestFlight
 
-### ios build_release
+### ios publish_ipa
 
 ```sh
-[bundle exec] fastlane ios build_release
+[bundle exec] fastlane ios publish_ipa
 ```
 
-Build App for TestFlight
+Push a build to TestFlight
+
+### ios build_release_project
+
+```sh
+[bundle exec] fastlane ios build_release_project
+```
+
+Build App for TestFlight - Project
+
+### ios build_release_workspace
+
+```sh
+[bundle exec] fastlane ios build_release_workspace
+```
+
+Build App for TestFlight - Workspace
+
+### ios build_release_workspace_multiple_targets
+
+```sh
+[bundle exec] fastlane ios build_release_workspace_multiple_targets
+```
+
+
 
 ### ios build_release_multiple_targets
 
@@ -46,6 +70,22 @@ Build App for TestFlight
 ```
 
 Loads provisioning profile
+
+### ios prepare_signing_pat
+
+```sh
+[bundle exec] fastlane ios prepare_signing_pat
+```
+
+Loads provisioning profiles using PAT
+
+### ios match_all
+
+```sh
+[bundle exec] fastlane ios match_all
+```
+
+Runs match for every app id / extension across all environments for the given type
 
 ### ios set_build_number
 
