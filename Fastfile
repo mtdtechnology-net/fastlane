@@ -194,6 +194,8 @@ platform :ios do
       project: project,
       scheme: scheme,
       export_method: export_method,
+      skip_profile_detection: true,
+      xcargs: "-skipMacroValidation",
       export_options: {
         provisioningProfiles: {
           app_id => provisioning_profile,
